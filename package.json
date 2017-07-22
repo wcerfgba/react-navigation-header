@@ -1,0 +1,9 @@
+{
+  "name": "react-navigation-header",
+  "version": "1.0.0-beta.12",
+  "description": "React Native app header component based on Header component from react-navigation.",
+  "main": "react-navigation-header.js",
+  "repository": "https://github.com/wcerfgba/react-navigation-header.git",
+  "author": "John L. Preston <wcerfgba@riseup.net>",
+  "license": "BSD-2-Clause"
+}
