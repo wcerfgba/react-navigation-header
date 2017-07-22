@@ -1,52 +1,52 @@
 /* @flow */
 
-'no babel-plugin-flow-react-proptypes';
+"no babel-plugin-flow-react-proptypes";
 
-import React from 'react';
+import React from "react";
 
-import { Animated, Platform, StyleSheet, View } from 'react-native';
+import { Animated, Platform, StyleSheet, View } from "react-native";
 
-import HeaderTitle from './HeaderTitle';
-import HeaderBackButton from './HeaderBackButton';
-import HeaderStyleInterpolator from './HeaderStyleInterpolator';
+import HeaderTitle from "./HeaderTitle";
+import HeaderBackButton from "./HeaderBackButton";
+import HeaderStyleInterpolator from "./HeaderStyleInterpolator";
 
 import type {
   NavigationScene,
   NavigationStyleInterpolator,
   LayoutEvent,
-  HeaderProps,
-} from '../../TypeDefinition';
+  HeaderProps
+} from "./TypeDefinition";
 
 type SceneProps = {
   scene: NavigationScene,
   position: Animated.Value,
-  progress: Animated.Value,
+  progress: Animated.Value
 };
 
 type SubViewRenderer<T> = (props: SceneProps) => ?React.Element<T>;
 
-type SubViewName = 'left' | 'title' | 'right';
+type SubViewName = "left" | "title" | "right";
 
 type HeaderState = {
   widths: {
-    [key: string]: number,
-  },
+    [key: string]: number
+  }
 };
 
-const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
-const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : 0;
-const TITLE_OFFSET = Platform.OS === 'ios' ? 70 : 56;
+const APPBAR_HEIGHT = Platform.OS === "ios" ? 44 : 56;
+const STATUSBAR_HEIGHT = Platform.OS === "ios" ? 20 : 0;
+const TITLE_OFFSET = Platform.OS === "ios" ? 70 : 56;
 
 class Header extends React.PureComponent<void, HeaderProps, HeaderState> {
   static HEIGHT = APPBAR_HEIGHT + STATUSBAR_HEIGHT;
 
   state = {
-    widths: {},
+    widths: {}
   };
 
   _getHeaderTitleString(scene: NavigationScene): ?string {
     const sceneOptions = this.props.getScreenDetails(scene).options;
-    if (typeof sceneOptions.headerTitle === 'string') {
+    if (typeof sceneOptions.headerTitle === "string") {
       return sceneOptions.headerTitle;
     }
     return sceneOptions.title;
@@ -84,7 +84,7 @@ class Header extends React.PureComponent<void, HeaderProps, HeaderState> {
   _renderTitleComponent = (props: SceneProps): ?React.Element<*> => {
     const details = this.props.getScreenDetails(props.scene);
     const headerTitle = details.options.headerTitle;
-    if (headerTitle && typeof headerTitle !== 'string') {
+    if (headerTitle && typeof headerTitle !== "string") {
       return headerTitle;
     }
     const titleString = this._getHeaderTitleString(props.scene);
@@ -95,13 +95,13 @@ class Header extends React.PureComponent<void, HeaderProps, HeaderState> {
     // On iOS, width of left/right components depends on the calculated
     // size of the title.
     const onLayoutIOS =
-      Platform.OS === 'ios'
+      Platform.OS === "ios"
         ? (e: LayoutEvent) => {
             this.setState({
               widths: {
                 ...this.state.widths,
-                [props.scene.key]: e.nativeEvent.layout.width,
-              },
+                [props.scene.key]: e.nativeEvent.layout.width
+              }
             });
           }
         : undefined;
@@ -118,7 +118,7 @@ class Header extends React.PureComponent<void, HeaderProps, HeaderState> {
 
   _renderLeftComponent = (props: SceneProps): ?React.Element<*> => {
     const options = this.props.getScreenDetails(props.scene).options;
-    if (typeof options.headerLeft !== 'undefined') {
+    if (typeof options.headerLeft !== "undefined") {
       return options.headerLeft;
     }
     if (props.scene.index === 0) {
@@ -153,7 +153,7 @@ class Header extends React.PureComponent<void, HeaderProps, HeaderState> {
   _renderLeft(props: SceneProps): ?React.Element<*> {
     return this._renderSubView(
       props,
-      'left',
+      "left",
       this._renderLeftComponent,
       HeaderStyleInterpolator.forLeft
     );
@@ -162,7 +162,7 @@ class Header extends React.PureComponent<void, HeaderProps, HeaderState> {
   _renderTitle(props: SceneProps, options: *): ?React.Element<*> {
     const style = {};
 
-    if (Platform.OS === 'android') {
+    if (Platform.OS === "android") {
       if (!options.hasLeftComponent) {
         style.left = 0;
       }
@@ -173,7 +173,7 @@ class Header extends React.PureComponent<void, HeaderProps, HeaderState> {
 
     return this._renderSubView(
       { ...props, style },
-      'title',
+      "title",
       this._renderTitleComponent,
       HeaderStyleInterpolator.forCenter
     );
@@ -182,7 +182,7 @@ class Header extends React.PureComponent<void, HeaderProps, HeaderState> {
   _renderRight(props: SceneProps): ?React.Element<*> {
     return this._renderSubView(
       props,
-      'right',
+      "right",
       this._renderRightComponent,
       HeaderStyleInterpolator.forRight
     );
@@ -211,7 +211,7 @@ class Header extends React.PureComponent<void, HeaderProps, HeaderState> {
       return null;
     }
 
-    const pointerEvents = offset !== 0 || isStale ? 'none' : 'box-none';
+    const pointerEvents = offset !== 0 || isStale ? "none" : "box-none";
 
     return (
       <Animated.View
@@ -224,8 +224,8 @@ class Header extends React.PureComponent<void, HeaderProps, HeaderState> {
           styleInterpolator({
             // todo: determine if we really need to splat all this.props
             ...this.props,
-            ...props,
-          }),
+            ...props
+          })
         ]}
       >
         {subView}
@@ -238,7 +238,7 @@ class Header extends React.PureComponent<void, HeaderProps, HeaderState> {
     const right = this._renderRight(props);
     const title = this._renderTitle(props, {
       hasLeftComponent: !!left,
-      hasRightComponent: !!right,
+      hasRightComponent: !!right
     });
 
     return (
@@ -256,20 +256,20 @@ class Header extends React.PureComponent<void, HeaderProps, HeaderState> {
   render() {
     let appBar;
 
-    if (this.props.mode === 'float') {
+    if (this.props.mode === "float") {
       const scenesProps: Array<
         SceneProps
       > = this.props.scenes.map((scene: NavigationScene) => ({
         position: this.props.position,
         progress: this.props.progress,
-        scene,
+        scene
       }));
       appBar = scenesProps.map(this._renderHeader, this);
     } else {
       appBar = this._renderHeader({
         position: new Animated.Value(this.props.scene.index),
         progress: new Animated.Value(0),
-        scene: this.props.scene,
+        scene: this.props.scene
       });
     }
 
@@ -298,61 +298,61 @@ class Header extends React.PureComponent<void, HeaderProps, HeaderState> {
 }
 
 let platformContainerStyles;
-if (Platform.OS === 'ios') {
+if (Platform.OS === "ios") {
   platformContainerStyles = {
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: 'rgba(0, 0, 0, .3)',
+    borderBottomColor: "rgba(0, 0, 0, .3)"
   };
 } else {
   platformContainerStyles = {
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOpacity: 0.1,
     shadowRadius: StyleSheet.hairlineWidth,
     shadowOffset: {
-      height: StyleSheet.hairlineWidth,
+      height: StyleSheet.hairlineWidth
     },
-    elevation: 4,
+    elevation: 4
   };
 }
 
 const styles = StyleSheet.create({
   container: {
     paddingTop: STATUSBAR_HEIGHT,
-    backgroundColor: Platform.OS === 'ios' ? '#F7F7F7' : '#FFF',
+    backgroundColor: Platform.OS === "ios" ? "#F7F7F7" : "#FFF",
     height: STATUSBAR_HEIGHT + APPBAR_HEIGHT,
-    ...platformContainerStyles,
+    ...platformContainerStyles
   },
   appBar: {
-    flex: 1,
+    flex: 1
   },
   header: {
-    flexDirection: 'row',
+    flexDirection: "row"
   },
   item: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "transparent"
   },
   title: {
     bottom: 0,
     left: TITLE_OFFSET,
     right: TITLE_OFFSET,
     top: 0,
-    position: 'absolute',
-    alignItems: Platform.OS === 'ios' ? 'center' : 'flex-start',
+    position: "absolute",
+    alignItems: Platform.OS === "ios" ? "center" : "flex-start"
   },
   left: {
     left: 0,
     bottom: 0,
     top: 0,
-    position: 'absolute',
+    position: "absolute"
   },
   right: {
     right: 0,
     bottom: 0,
     top: 0,
-    position: 'absolute',
-  },
+    position: "absolute"
+  }
 });
 
 export default Header;

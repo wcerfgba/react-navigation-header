@@ -1,18 +1,18 @@
 /* @flow */
 
-import React from 'react';
+import React from "react";
 import {
   I18nManager,
   Image,
   Text,
   View,
   Platform,
-  StyleSheet,
-} from 'react-native';
+  StyleSheet
+} from "react-native";
 
-import type { LayoutEvent, TextStyleProp } from '../../TypeDefinition';
+import type { LayoutEvent, TextStyleProp } from "./TypeDefinition";
 
-import TouchableItem from '../TouchableItem';
+import TouchableItem from "./TouchableItem";
 
 type Props = {
   onPress?: () => void,
@@ -21,26 +21,26 @@ type Props = {
   titleStyle?: ?TextStyleProp,
   tintColor?: ?string,
   truncatedTitle?: ?string,
-  width?: ?number,
+  width?: ?number
 };
 
 type DefaultProps = {
   pressColorAndroid: string,
   tintColor: ?string,
-  truncatedTitle: ?string,
+  truncatedTitle: ?string
 };
 
 type State = {
-  initialTextWidth?: number,
+  initialTextWidth?: number
 };
 
 class HeaderBackButton extends React.PureComponent<DefaultProps, Props, State> {
   static defaultProps = {
-    pressColorAndroid: 'rgba(0, 0, 0, .32)',
+    pressColorAndroid: "rgba(0, 0, 0, .32)",
     tintColor: Platform.select({
-      ios: '#037aff',
+      ios: "#037aff"
     }),
-    truncatedTitle: 'Back',
+    truncatedTitle: "Back"
   };
 
   state = {};
@@ -50,7 +50,7 @@ class HeaderBackButton extends React.PureComponent<DefaultProps, Props, State> {
       return;
     }
     this.setState({
-      initialTextWidth: e.nativeEvent.layout.x + e.nativeEvent.layout.width,
+      initialTextWidth: e.nativeEvent.layout.x + e.nativeEvent.layout.width
     });
   };
 
@@ -62,7 +62,7 @@ class HeaderBackButton extends React.PureComponent<DefaultProps, Props, State> {
       title,
       titleStyle,
       tintColor,
-      truncatedTitle,
+      truncatedTitle
     } = this.props;
 
     const renderTruncated =
@@ -73,7 +73,7 @@ class HeaderBackButton extends React.PureComponent<DefaultProps, Props, State> {
     const backButtonTitle = renderTruncated ? truncatedTitle : title;
 
     // eslint-disable-next-line global-require
-    const asset = require('../assets/back-icon.png');
+    const asset = require("../assets/back-icon.png");
 
     return (
       <TouchableItem
@@ -92,18 +92,18 @@ class HeaderBackButton extends React.PureComponent<DefaultProps, Props, State> {
             style={[
               styles.icon,
               !!title && styles.iconWithTitle,
-              !!tintColor && { tintColor },
+              !!tintColor && { tintColor }
             ]}
             source={asset}
           />
-          {Platform.OS === 'ios' &&
+          {Platform.OS === "ios" &&
             title &&
             <Text
               onLayout={this._onTextLayout}
               style={[
                 styles.title,
                 !!tintColor && { color: tintColor },
-                titleStyle,
+                titleStyle
               ]}
               numberOfLines={1}
             >
@@ -117,38 +117,38 @@ class HeaderBackButton extends React.PureComponent<DefaultProps, Props, State> {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
+    alignItems: "center",
+    flexDirection: "row",
+    backgroundColor: "transparent"
   },
   title: {
     fontSize: 17,
-    paddingRight: 10,
+    paddingRight: 10
   },
   icon:
-    Platform.OS === 'ios'
+    Platform.OS === "ios"
       ? {
           height: 21,
           width: 13,
           marginLeft: 10,
           marginRight: 22,
           marginVertical: 12,
-          resizeMode: 'contain',
-          transform: [{ scaleX: I18nManager.isRTL ? -1 : 1 }],
+          resizeMode: "contain",
+          transform: [{ scaleX: I18nManager.isRTL ? -1 : 1 }]
         }
       : {
           height: 24,
           width: 24,
           margin: 16,
-          resizeMode: 'contain',
-          transform: [{ scaleX: I18nManager.isRTL ? -1 : 1 }],
+          resizeMode: "contain",
+          transform: [{ scaleX: I18nManager.isRTL ? -1 : 1 }]
         },
   iconWithTitle:
-    Platform.OS === 'ios'
+    Platform.OS === "ios"
       ? {
-          marginRight: 5,
+          marginRight: 5
         }
-      : {},
+      : {}
 });
 
 export default HeaderBackButton;

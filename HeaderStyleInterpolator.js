@@ -4,13 +4,13 @@ import {
   I18nManager,
   Animated,
   type StyleDefinition,
-  type AnimatedViewStylePropTypes,
-} from 'react-native';
+  type AnimatedViewStylePropTypes
+} from "react-native";
 
 import type {
   NavigationSceneRendererProps,
-  AnimatedViewStyleProp,
-} from '../../TypeDefinition';
+  AnimatedViewStyleProp
+} from "./TypeDefinition";
 
 /**
  * Utility that builds the style for the navigation header.
@@ -31,8 +31,8 @@ function forLeft(
   return {
     opacity: position.interpolate({
       inputRange: [index - 1, index - 0.5, index, index + 0.5, index + 1],
-      outputRange: ([0, 0, 1, 0, 0]: Array<number>),
-    }),
+      outputRange: ([0, 0, 1, 0, 0]: Array<number>)
+    })
   };
 }
 
@@ -44,7 +44,7 @@ function forCenter(
   return {
     opacity: position.interpolate({
       inputRange: [index - 1, index, index + 1],
-      outputRange: ([0, 1, 0]: Array<number>),
+      outputRange: ([0, 1, 0]: Array<number>)
     }),
     transform: [
       {
@@ -52,10 +52,10 @@ function forCenter(
           inputRange: [index - 1, index + 1],
           outputRange: I18nManager.isRTL
             ? ([-200, 200]: Array<number>)
-            : ([200, -200]: Array<number>),
-        }),
-      },
-    ],
+            : ([200, -200]: Array<number>)
+        })
+      }
+    ]
   };
 }
 
@@ -67,13 +67,13 @@ function forRight(
   return {
     opacity: position.interpolate({
       inputRange: [index - 1, index, index + 1],
-      outputRange: ([0, 1, 0]: Array<number>),
-    }),
+      outputRange: ([0, 1, 0]: Array<number>)
+    })
   };
 }
 
 export default {
   forLeft,
   forCenter,
-  forRight,
+  forRight
 };
