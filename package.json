@@ -5,5 +5,10 @@
   "main": "react-navigation-header.js",
   "repository": "https://github.com/wcerfgba/react-navigation-header.git",
   "author": "John L. Preston <wcerfgba@riseup.net>",
-  "license": "BSD-2-Clause"
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "flow-bin": "^0.51.0",
+    "react": "^15.6.1",
+    "react-native": "^0.46.4"
+  }
 }
